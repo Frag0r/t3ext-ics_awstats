@@ -9,11 +9,11 @@ if (TYPO3_MODE=='BE') {
     '',
     [
       'routeTarget' => \tx_icsawstats_module1::class . '::mainAction',
-        'access' => 'user,group',
-        'name' => 'tools_txicsawstatsM1',
-        'icon' => 'EXT:ics_awstats/mod1/moduleicon.gif',
-        'navigationComponentId' => 'typo3-pagetree',
-        'labels' => 'LLL:EXT:ics_awstats/mod1/locallang_mod.xml'
+      'access' => 'admin',
+      'name' => 'tools_txicsawstatsM1',
+      'icon' => 'EXT:ics_awstats/mod1/moduleicon.gif',
+      'navigationComponentId' => '',
+      'labels' => 'LLL:EXT:ics_awstats/mod1/locallang_mod.xml'
     ]
   );
 }
