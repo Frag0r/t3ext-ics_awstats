@@ -7,10 +7,12 @@
 } else {
 	define('TYPO3_MOD_PATH', '../typo3conf/ext/ics_awstats/mod1/');
 }*/
+if (!is_array($MCONF)) {
+    $MCONF = array();
+}
 
 $MCONF['name']='tools_txicsawstatsM1';
 $MCONF['script']='_DISPATCH';
-
 $MCONF['access']='admin';
 
 $MLANG['default']['tabs_images']['tab'] = 'moduleicon.gif';

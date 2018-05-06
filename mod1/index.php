@@ -3,6 +3,7 @@
 use \TYPO3\CMS\Backend\Utility\BackendUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Core\Utility\DebugUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -35,16 +36,28 @@ use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 
 unset($MCONF);
-require('conf.php');
-
-$GLOBALS['LANG']->includeLLFile('EXT:ics_awstats/mod1/locallang.xml');
-$GLOBALS['BE_USER']->modAccess($MCONF, 1);  // This checks permissions and exits if the users has no permission for entry.
 
 class tx_icsawstats_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
   var $pageinfo;
+  
+  public function mainAction(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) {
+	    
+		$GLOBALS['LANG']->includeLLFile('EXT:tt_news/mod1/locallang.xml');
+        $GLOBALS['SOBE'] = $this;
+        $this->init();
+        $this->main();
+        $response->getBody()->write($this->printContent());
 
-  public function __construct() {
+        return $response;
+	
+}
+
+  public function init() {
+	require('conf.php');
+	$GLOBALS['BE_USER']->modAccess($MCONF, 1);  // This checks permissions and exits if the users has no permission for entry.
+    $this->MCONF = $MCONF;
+	
     parent::init();
     
     // Initialize document
@@ -57,6 +70,7 @@ class tx_icsawstats_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
       'tx_icswebawstats',
       '../' . ExtensionManagementUtility::siteRelPath('ics_awstats') . 'mod1/mod_styles.css'
     );
+	
   } 
   
   /**
@@ -71,7 +85,7 @@ class tx_icsawstats_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
     $this->content.= $this->doc->startPage($LANG->getLL('title'));
     $this->content.= $this->doc->header($LANG->getLL('title'));
-    $this->content.= $this->doc->spacer(5);
+    //$this->content.= $this->doc->spacer(5);
       
     // Render content:
     $this->moduleContent();
@@ -274,7 +288,7 @@ class tx_icsawstats_module1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
       // button to delete cache files
       if (($theCodeChecked) && (! $awstats->ext_conf['disableClearCache'])) {
-        $content.= $this->doc->spacer(15);
+        //$content.= $this->doc->spacer(15);
         if (GeneralUtility::_GP('logf_clear_cache')) {
           $theCode=''.$LANG->getLL('cacheCleared').'';
         } else {
@@ -412,9 +426,5 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ics_aws
 
 
 
-// Make instance:
-$SOBE = GeneralUtility::makeInstance('tx_icsawstats_module1');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+
 
